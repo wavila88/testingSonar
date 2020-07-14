@@ -1,0 +1,316 @@
+version: 2.1
+
+# global variables
+context: &context
+  "digitalinsurance" #HERE ARE THE RESPECTIVE CONTEXT OF CIRCLECI TO THE TEAM
+team: &team
+  "sd" #cc-tc-cd-pv-bm-pl-pb-sd-cs
+bucket_qa: &bucket_qa
+  "develop-bdb-di-terraform-states" #HERE IS THE BUCKET WHERE THE TERRAFORM STATE WILL BE STORED, CREATE IT BEFORE DEPLOY YOUR SERVICE INFRASTRUCTURE
+bucket_stage: &bucket_stage
+  "stage-bdb-di-terraform-states" #HERE IS THE BUCKET WHERE THE TERRAFORM STATE WILL BE STORED, CREATE IT BEFORE DEPLOY YOUR SERVICE INFRASTRUCTURE
+bucket_prod: &bucket_prod
+  "prod-bdb-di-terraform-states" #HERE IS THE BUCKET WHERE THE TERRAFORM STATE WILL BE STORED, CREATE IT BEFORE DEPLOY YOUR SERVICE INFRASTRUCTURE
+project_name: &project_name
+  "bbog-dig-sd-event-data-product-lambda"
+files_compress: &files_compress
+  "src node_modules index.js package.json package-lock.json" #List of files to compress to send for Lambda
+
+# parameters
+parameters:
+  context:
+    type: string
+    default: *context
+  team:
+    type: string
+    default: *team
+  bucket_qa: 
+    type: string
+    default: *bucket_qa
+  bucket_stage: 
+    type: string
+    default: *bucket_stage
+  bucket_prod: 
+    type: string
+    default: *bucket_prod
+  project_name:
+    type: string
+    default: *project_name
+  files_compress:
+    type: string
+    default: *files_compress
+
+references:
+  working-directory: &working-directory
+    ~/<< pipeline.parameters.project_name >>	
+
+  working-directory-attachment: &working-directory-attachment
+    attach_workspace:
+      at: *working-directory
+
+  npm-cache-path: &npm-cache-path
+    node_modules
+  
+  docker-image-caching: &docker-image-caching
+    setup_remote_docker: 
+      docker_layer_caching: true
+
+  docker-config: &docker-config
+    working_directory: *working-directory
+    docker:
+      - image: circleci/node:11-browsers-legacy
+
+  machine-config: &machine-config
+    working_directory: *working-directory
+    machine:
+      enabled: true
+      docker_layer_caching: true
+
+  project-full-cache-key: &project-full-cache-key
+    npm-<< pipeline.parameters.project_name >>-{{ checksum "package.json" }}-{{ .Branch }}-full-cache-v1.3
+
+  project-cache-key: &project-cache-key
+    npm-<< pipeline.parameters.project_name >>-{{ checksum "package.json" }}-{{ .Branch }}-v1.6
+
+  project-full-cache-restoring: &project-full-cache-restoring
+    restore_cache:
+      keys:
+        - *project-full-cache-key
+
+  project-full-cache-saving: &project-full-cache-saving
+    save_cache:
+      key: *project-full-cache-key
+      paths:
+        - *npm-cache-path
+
+  project-cache-restoring: &project-cache-restoring
+    restore_cache:
+      keys:
+        - *project-cache-key
+
+  project-cache-saving: &project-cache-saving
+    save_cache:
+      key: *project-cache-key
+      paths:
+        - *npm-cache-path
+
+  git-bdb-lambdas-pipeline-clonning: &git-bdb-lambdas-pipeline-clonning
+    run:
+      name: git-bbog-bdb-lambdas-pipeline-clonning
+      command: |
+        git clone git@github.com:bancodebogota/bbog-bdb-lambdas-pipeline.git
+        cd bbog-bdb-lambdas-pipeline
+        git checkout v1.0.2
+        cd ..
+  git-bdb-terraform-templates-clonning: &git-bdb-terraform-templates-clonning
+    run:
+      name: git-terraform-templates-clonning
+      command: |
+        git clone git@github.com:bancodebogota/terraform-templates.git
+        cd terraform-templates
+        git checkout v1.4
+        cd ..
+
+jobs:
+  building:
+    <<: *docker-config
+    steps:
+      - checkout
+      - *docker-image-caching
+      - *project-full-cache-restoring
+      - run:
+          name: dependencies-downloading
+          command: npm i
+      - run:
+          name: building
+          command: npm run build
+      - *project-full-cache-saving
+      - *project-cache-restoring
+      - run:
+          name: dependencies-downloading
+          command: npm i --only=prod
+      - *project-cache-saving
+      - persist_to_workspace:
+          root: .
+          paths: .
+
+  test:
+    <<: *docker-config
+    steps:
+      - checkout
+      - *docker-image-caching
+      - *project-cache-restoring
+      - run:
+          name: running-tests
+          command: npm run test && npm run coverage:report
+      - persist_to_workspace:
+          root: .
+          paths:
+            - coverage
+
+  sonar:
+    <<: *machine-config
+    steps:
+      - checkout
+      - *project-cache-restoring
+      - *working-directory-attachment
+      - run:
+          name: running-sonar
+          command: |
+            docker run \
+              --rm --name node-app \
+              -v $(pwd):/app -itd -w "/app" \
+              -e SONAR_CLOUD_ENDPOINT=$SONAR_CLOUD_ENDPOINT \
+              -e SONAR_CLOUD_TOKEN=$SONAR_CLOUD_TOKEN \
+              -e SONAR_CLOUD_PROJECT_NAME=$SONAR_CLOUD_PROJECT_NAME \
+              -e SONAR_CLOUD_ORG=$SONAR_CLOUD_ORG \
+              -e SONAR_CLOUD_PROJECT_KEY=$SONAR_CLOUD_PROJECT_KEY \
+              node:10 bash
+            docker exec node-app npm run sonar
+
+# develop configuration
+  develop-lambda-provisioning:
+    <<: *machine-config
+    steps:
+      - checkout
+      - *git-bdb-lambdas-pipeline-clonning
+      - *git-bdb-terraform-templates-clonning
+      - *working-directory-attachment
+      - *project-cache-restoring
+      - run:
+          name: infraestructure-provisioning
+          command: |
+            if [[ `git log -1` =~ "npm-releasing" ]]; then
+              echo "deployment ignored"
+            else
+              chmod +x bbog-bdb-lambdas-pipeline/setup.sh
+              bash bbog-bdb-lambdas-pipeline/setup.sh \
+                --team=<< pipeline.parameters.team >> \
+                --app-name=<< pipeline.parameters.project_name >> \
+                --environment=develop \
+                --aws-account-id=$AWS_ACCOUNT_ID_QA \
+                --aws-access-key-id=$AWS_ACCESS_KEY_ID_QA_DEPLOY \
+                --aws-secret-access-key=$AWS_SECRET_ACCESS_KEY_QA_DEPLOY \
+                --bucket-name=<< pipeline.parameters.bucket_qa >> \
+                --version=$(node -p -e "require('./package.json').version") \
+                --files-to-compress="<< pipeline.parameters.files_compress >>"
+            fi
+      - run:
+          name: versioning
+          command: |
+            cd ~/<< pipeline.parameters.project_name >>
+            chmod +x terraform-templates/versioning/node/upgrade.sh
+            bash terraform-templates/versioning/node/upgrade.sh
+
+# stage configuration
+  stage-lambda-provisioning:
+    <<: *machine-config
+    steps:
+      - checkout
+      - *git-bdb-lambdas-pipeline-clonning
+      - *git-bdb-terraform-templates-clonning
+      - *working-directory-attachment
+      - *project-cache-restoring
+      - run:
+          name: infraestructure-provisioning
+          command: |
+            if [[ `git log -1` =~ "npm-releasing" ]]; then
+              echo "deployment ignored"
+            else
+              chmod +x bbog-bdb-lambdas-pipeline/setup.sh
+              bash bbog-bdb-lambdas-pipeline/setup.sh \
+                --team=<< pipeline.parameters.team >> \
+                --app-name=<< pipeline.parameters.project_name >> \
+                --environment=stage \
+                --aws-account-id=$AWS_ACCOUNT_ID_STAGING \
+                --aws-access-key-id=$AWS_ACCESS_KEY_ID_ST_DEPLOY \
+                --aws-secret-access-key=$AWS_SECRET_ACCESS_KEY_ST_DEPLOY \
+                --bucket-name=<< pipeline.parameters.bucket_stage >> \
+                --version=$(node -p -e "require('./package.json').version") \
+                --files-to-compress="<< pipeline.parameters.files_compress >>"
+            fi
+      - run:
+          name: versioning
+          command: |
+            cd ~/<< pipeline.parameters.project_name >>
+            chmod +x terraform-templates/versioning/node/upgrade.sh
+            bash terraform-templates/versioning/node/upgrade.sh \
+              --banches-to-update=develop
+
+# production configuration
+  production-lambda-provisioning:
+    <<: *machine-config
+    steps:
+      - checkout
+      - *git-bdb-lambdas-pipeline-clonning
+      - *git-bdb-terraform-templates-clonning
+      - *working-directory-attachment
+      - *project-cache-restoring
+      - run:
+          name: infraestructure-provisioning
+          command: |
+            if [[ `git log -1` =~ "npm-releasing" ]]; then
+              echo "deployment ignored"
+            else
+              chmod +x bbog-bdb-lambdas-pipeline/setup.sh
+              bash bbog-bdb-lambdas-pipeline/setup.sh \
+                --team=<< pipeline.parameters.team >> \
+                --app-name=<< pipeline.parameters.project_name >> \
+                --environment=prod \
+                --aws-account-id=$AWS_ACCOUNT_ID_PROD \
+                --aws-access-key-id=$AWS_ACCESS_KEY_ID_PROD_DEPLOY \
+                --aws-secret-access-key=$AWS_SECRET_ACCESS_KEY_PROD_DEPLOY \
+                --bucket-name=<< pipeline.parameters.bucket_prod >> \
+                --version=$(node -p -e "require('./package.json').version") \
+                --files-to-compress="<< pipeline.parameters.files_compress >>"
+            fi
+      - run:
+          name: versioning
+          command: |
+            cd ~/<< pipeline.parameters.project_name >>
+            chmod +x terraform-templates/versioning/node/upgrade.sh
+            bash terraform-templates/versioning/node/upgrade.sh \
+              --banches-to-update=develop,stage
+
+workflows:
+  version: 2
+  building-and-deployment:
+    jobs:
+      - building
+      - test:
+          requires:
+            - building
+      - sonar:
+          context: sonar-jfrog-reader	
+          requires:
+            - test
+
+# develop workflow
+      - develop-lambda-provisioning:
+          context: << pipeline.parameters.context >>	
+          requires:
+            - sonar
+          filters:
+            branches:
+              only:
+                - develop
+
+# stage workflow
+      - stage-lambda-provisioning:
+          context: << pipeline.parameters.context >>	
+          requires:
+            - sonar
+          filters:
+            branches:
+              only:
+                - stage
+
+# production workflow
+      - production-lambda-provisioning:
+          context: << pipeline.parameters.context >>	
+          requires:
+            - sonar
+          filters:
+            branches:
+              only:
+                - master
