@@ -12,7 +12,7 @@ bucket_stage: &bucket_stage
 bucket_prod: &bucket_prod
   "prod-bdb-di-terraform-states" #HERE IS THE BUCKET WHERE THE TERRAFORM STATE WILL BE STORED, CREATE IT BEFORE DEPLOY YOUR SERVICE INFRASTRUCTURE
 project_name: &project_name
-  "bbog-dig-sd-event-data-product-lambda"
+  "bbog-dig-event-data-product-lambda"
 files_compress: &files_compress
   "src node_modules index.js package.json package-lock.json" #List of files to compress to send for Lambda
 
