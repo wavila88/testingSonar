@@ -1,0 +1,25 @@
+{
+  "name": "bbog-dig-sd-events-temp-insproduct-lambda",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx tsc",
+    "sonar": "gulp sonar"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "follow-redirects": "^1.11.0",
+    "fs": "0.0.1-security",
+    "jsonpath": "^1.0.2",
+    "mysql": "^2.17.1",
+    "node-fetch": "^2.6.0",
+    "r2": "^2.0.1",
+    "request": "^2.88.2",
+    "unirest": "^0.6.0",
+    "uuid": "^8.0.0"
+  }
+}
