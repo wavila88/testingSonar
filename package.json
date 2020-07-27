@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "nyc --reporter=text mocha --timeout 10000 './src/test/'",
     "build": "npx tsc",
     "sonar": "gulp sonar"
   },
@@ -12,11 +12,14 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.19.2",
+    "chai": "^4.2.0",
     "follow-redirects": "^1.11.0",
     "fs": "0.0.1-security",
     "jsonpath": "^1.0.2",
+    "mocha": "^8.0.1",
     "mysql": "^2.17.1",
     "node-fetch": "^2.6.0",
+    "nyc": "^15.1.0",
     "r2": "^2.0.1",
     "request": "^2.88.2",
     "unirest": "^0.6.0",
