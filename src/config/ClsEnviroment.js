@@ -2,7 +2,7 @@ const ObjClsSec		        =   require('../config/ClsSec.js');
 
 const GetEnviromentAcces = (Option) =>{
 
-     let varEnviroment = process.env.VTypeEnv;  
+     let varEnviroment = process.env.VTypeEnv || "1";  
      let GateAccess =  '';
      let AccessReturn = '';
      
@@ -48,6 +48,50 @@ const GetEnviromentAcces = (Option) =>{
           }
           
      }
+
+     if(Option === "2")//End Point
+     {
+        if (varEnviroment === "1") // QA
+        {
+            GateAccess = '2afefb7c5ea0f0cd6982df7849c5107a752962e46c2779a34b2054c521';
+            AccessReturn = ObjClsSec.ProcessDesObfuscate(GateAccess);
+        }
+        
+        if (varEnviroment === "2") // ST
+        {
+            GateAccess = '2afefb7c5ea0f0cd6982df7849c5107a752962e46c2779a34b2054c521';
+            AccessReturn = ObjClsSec.ProcessDesObfuscate(GateAccess);
+        }
+        
+        if (varEnviroment === "3") //PROD
+        {
+            GateAccess = '2afefb7c5ea0f0cd6982df7849c5107a752962e46c2779a34b2054c521';
+            AccessReturn = ObjClsSec.ProcessDesObfuscate(GateAccess);
+        }
+        
+     }
+     if(Option === "3")//Resource
+     {
+        if (varEnviroment === "1") // QA
+        {
+            GateAccess = '36e9a26a44e8ac962596d7224a8b1f7a792272e8776f';
+            AccessReturn = ObjClsSec.ProcessDesObfuscate(GateAccess);
+        }
+        
+        if (varEnviroment === "2") // ST
+        {
+            GateAccess = '36e9a26a44e8ac962596d7224a8b1f7a792272e8776f';
+            AccessReturn = ObjClsSec.ProcessDesObfuscate(GateAccess);
+        }
+        
+        if (varEnviroment === "3") //PROD
+        {
+            GateAccess = 'tc-first-data/account/';
+            AccessReturn = ObjClsSec.ProcessDesObfuscate(GateAccess);
+        }
+        
+     }
+      
      
      return AccessReturn;
     

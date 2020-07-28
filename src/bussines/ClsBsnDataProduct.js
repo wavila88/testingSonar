@@ -21,7 +21,8 @@ const BsnDataProduct  = async (requestUser,cb)=>{
         var vUrlAPiProduct = ObjClsEnv.GetEnviromentAcces("1");
         const ObjOfusData = new ClsObjOfus();
         
-        console.log("API a consumir : " + vUrlAPiProduct);
+        console.log("vXapiKey : " + vXapiKey);
+        console.log("vUrlAPiProduct : " + vUrlAPiProduct);
         
         let dataRow = JSON.stringify({
               "documentNumber":  requestUser.viDOCUMENT_NUMBER  ,

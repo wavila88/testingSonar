@@ -1,5 +1,10 @@
 const product = require('../bussines/ClsBsnDataProduct');
-const assert = require('chai').assert;
+const expect = require('chai').expect;
+const response = require('./response');
+const prueba = require('../bussines/prueba');
+const nock = require('nock');
+var ObjClsEnv = require('../config/ClsEnviroment');
+var Cifrado = require('../config/ClsSec');
 
 
 const request ={
@@ -23,13 +28,45 @@ const request2 ={
 }
 
 describe('test data product ', () =>{
+  beforeEach(() => {
+    var endpoint = ObjClsEnv.GetEnviromentAcces("2");
+    var resource = ObjClsEnv.GetEnviromentAcces("3");
+   
+    
+    nock('https://api.github.com')
+      .get('/users/octocat')
+      .reply(200, response);
+    });
+
+
+
+    it('Get a user by username', () => {
+      return prueba.getUser('octocat')
+        .then(response => {
+          //expect an object back
+          console.log("AQUI", response);
+          expect(typeof response).to.equal('object');
+  
+          expect(response.name).to.equal('The Octocat')
+          expect(response.company).to.equal('GitHub')
+          expect(response.location).to.equal('San Francisco')
+          //Test result of name, company and location for the response
+          // expect(response.id).to.equal('123')
+          // expect(response.respuesta).to.equal('Respuesta exitosa')
+          
+        });
+    });
 
   it('Type product con  0', ()=>{
-   product.BsnDataProduct(request);
+    var develop= Cifrado.ProcessObfuscate('https://api.bancodebogota.co/');
+    console.log("DEVELOP CIFRADO", develop);
+    var desifrado = Cifrado.ProcessDesObfuscate(develop);
+    console.log("DEVELOP Desifrado", desifrado);
+    // prod https://api.bancodebogota.co/tc-first-data/account/
+    // develop https://3iikhi3vcb.execute-api.us-east-1.amazonaws.com/qa/account/
+   // product.BsnDataProduct(request);
   });
 
-  it('Type product diferente 0', ()=>{
-    product.BsnDataProduct(request2);
-   });
+
 
 });
