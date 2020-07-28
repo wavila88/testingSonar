@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "nyc --reporter=text mocha --timeout 10000 './src/test/'",
+    "test": "nyc --reporter=text mocha --timeout 10000 './src/Test/'",
     "build": "npx tsc",
     "sonar": "gulp sonar"
   },

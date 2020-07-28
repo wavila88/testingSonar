@@ -1,7 +1,7 @@
 const product = require('../bussines/ClsBsnDataProduct');
 const expect = require('chai').expect;
 const response = require('./response.mock');
-const nock = require('nock');
+const nock = require('./node_modules/nock');
 var ObjClsEnv = require('../config/ClsEnviroment');
 
 
