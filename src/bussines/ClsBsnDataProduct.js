@@ -3,7 +3,7 @@ var jsonPathView            =   require('jsonpath');
 const httpStatus		        =   require('../config/httpStatus.js');
 const responseFunction      =   require('../config/templateResponse.js');
 var uuid                    =   require('uuid');
-var ObjClsTest              = require('../Test/DataTest.js');
+var ObjClsTest              = require('../utilitys/DataTest.js');
 var ObjClsEnv               = require('../config/ClsEnviroment.js');
 const ClsObjOfus            = require('../config/ClsUtil.js');
 
@@ -53,7 +53,7 @@ const BsnDataProduct  = async (requestUser,cb)=>{
             else
             {
               var boolRtaConst = response.body.includes("Transaccion exitosa");
-             
+              
               if(boolRtaConst === true)
               {
                 jsonResultData = JSON.parse(response.body);
