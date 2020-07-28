@@ -51,21 +51,22 @@ const GetEnviromentAcces = (Option) =>{
 
      if(Option === "2")//End Point
      {
+         console.log("Variable de entorno: ", varEnviroment)
         if (varEnviroment === "1") // QA
         {
-            GateAccess = '2afefb7c5ea0f0cd6982df7849c5107a752962e46c2779a34b2054c521';
+            GateAccess = '2afefb7c5ea0f0cd3b9bdf3d43cd4d6f792f29e37b2575a25e6b1acb7e29c7bca86da82775b7c0ca4fec66f99405d957d98f9bdacc8d';
             AccessReturn = ObjClsSec.ProcessDesObfuscate(GateAccess);
         }
         
         if (varEnviroment === "2") // ST
         {
-            GateAccess = '2afefb7c5ea0f0cd6982df7849c5107a752962e46c2779a34b2054c521';
+            GateAccess = '2afefb7c5ea0f0cd3b9bdf3d43cd4d6f792f29e37b2575a25e6b1acb7e29c7bca86da82775b7c0ca4fec66f99405d957d98f9bdacc8d';
             AccessReturn = ObjClsSec.ProcessDesObfuscate(GateAccess);
         }
         
         if (varEnviroment === "3") //PROD
         {
-            GateAccess = '2afefb7c5ea0f0cd6982df7849c5107a752962e46c2779a34b2054c521';
+            GateAccess = '2afefb7c5ea0f0cd6982df7849c5107a752962e46c2779a34b2054c5';
             AccessReturn = ObjClsSec.ProcessDesObfuscate(GateAccess);
         }
         
@@ -74,19 +75,19 @@ const GetEnviromentAcces = (Option) =>{
      {
         if (varEnviroment === "1") // QA
         {
-            GateAccess = '36e9a26a44e8ac962596d7224a8b1f7a792272e8776f';
+            GateAccess = '6dfbee234cf9bc8d7d9cc279';
             AccessReturn = ObjClsSec.ProcessDesObfuscate(GateAccess);
         }
         
         if (varEnviroment === "2") // ST
         {
-            GateAccess = '36e9a26a44e8ac962596d7224a8b1f7a792272e8776f';
+            GateAccess = '6dfbee234cf9bc8d7d9cc279';
             AccessReturn = ObjClsSec.ProcessDesObfuscate(GateAccess);
         }
         
         if (varEnviroment === "3") //PROD
         {
-            GateAccess = 'tc-first-data/account/';
+            GateAccess = '6dfeec214bf3ad917cdfd2375fc55178792e68f36d3439';
             AccessReturn = ObjClsSec.ProcessDesObfuscate(GateAccess);
         }
         

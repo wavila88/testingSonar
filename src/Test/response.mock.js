@@ -1,0 +1,126 @@
+
+const response = {
+    "acctCCInfoInqRs": {
+        "rqUID": "43bca1a1-17d3-4688-8621-396b3f0a3371",
+        "asyncRqUID": null,
+        "revClientTrnSeq": null,
+        "status": {
+            "statusCode": "0",
+            "serverStatusCode": "FID-00000",
+            "severity": "INFO",
+            "statusDesc": "Transaccion exitosa",
+            "serverStatusDesc": "",
+            "additionalStatus": [],
+            "asyncRsInfo": null
+        },
+        "custId": null,
+        "nextDay": null,
+        "serverTerminalSeqId": null,
+        "networkTrnInfo": null,
+        "serverDt": null,
+        "custInfo": {
+            "typeId": null,
+            "participantId": "0000000008009047101",
+            "custType": null,
+            "personClient": null,
+            "orgClient": null,
+            "otherIdentDoc": null
+        },
+        "cardAcctId": {
+            "productId": "",
+            "productCode": null,
+            "productNum": null,
+            "acctType": null,
+            "acctSubType": null,
+            "acctName": null,
+            "acctDomain": null,
+            "acctCur": null,
+            "cardId": "0004916267368566683",
+            "cardSeqNum": "1",
+            "chpCrdSeqNum": null,
+            "lastChpCrdSeqNum": null,
+            "cardStatus": {
+                "statusCode": "N",
+                "statusDesc": [],
+                "lockId": [
+                    ""
+                ],
+                "integralLock": null,
+                "bankPreventiveLock": null,
+                "branchPreventiveLock": null,
+                "voluntaryLock": null,
+                "lockingPriority": null,
+                "massiveProcess": "",
+                "statusMtvType": "0",
+                "effDt": null,
+                "issDt": null,
+                "cancellationReason": null,
+                "vbv": []
+            },
+            "cardIssngMtvCode": null,
+            "cardIssngAccCode": null,
+            "effAcctCardsCount": null,
+            "strtAcctCardsCount": null,
+            "linkedAcct": null,
+            "maxCurAmt": null,
+            "cosignerInd": null,
+            "compositeCurAmt": null,
+            "cosigner": [],
+            "ccmotoAcct": {
+                "effDt": null,
+                "expDt": null,
+                "cardVrfyData": null,
+                "technology": null,
+                "name": [],
+                "desc": null,
+                "contactInfo": null,
+                "franchise": null,
+                "brand": "432",
+                "emblem": null
+            },
+            "ecardind": null
+        },
+        "account": {
+            "productId": "4916264320327988743",
+            "productCode": null,
+            "productNum": null,
+            "acctType": null,
+            "acctSubType": null,
+            "acctName": null,
+            "acctDomain": null,
+            "acctCur": null,
+            "acctId": null,
+            "linkedAcct": null,
+            "acctPlanCode": null,
+            "ratingId": null,
+            "effDt": null,
+            "expDt": null,
+            "billCycle": null,
+            "billCycleType": null,
+            "foreignUse": null,
+            "curAmt": null,
+            "bankInfo": {
+                "bankIdType": null,
+                "bankId": null,
+                "name": null,
+                "branchId": null,
+                "branchName": "0015",
+                "branchIdType": null,
+                "phoneNum": null,
+                "postAddr": null,
+                "segmentCode": null,
+                "regionCode": null,
+                "placeCode": null,
+                "zoneCode": null,
+                "accountantCenter": null,
+                "daneCode": null,
+                "respCenterCode": null
+            },
+            "accountStatus": null,
+            "compositeCurAmt": [],
+            "pctcode": []
+        }
+    }
+}
+
+module.exports = response;

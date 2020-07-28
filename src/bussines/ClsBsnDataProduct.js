@@ -21,8 +21,6 @@ const BsnDataProduct  = async (requestUser,cb)=>{
         var vUrlAPiProduct = ObjClsEnv.GetEnviromentAcces("1");
         const ObjOfusData = new ClsObjOfus();
         
-        console.log("vXapiKey : " + vXapiKey);
-        console.log("vUrlAPiProduct : " + vUrlAPiProduct);
         
         let dataRow = JSON.stringify({
               "documentNumber":  requestUser.viDOCUMENT_NUMBER  ,
@@ -45,7 +43,9 @@ const BsnDataProduct  = async (requestUser,cb)=>{
         
         if(requestUser.viTYPE_PROCESS  === "0")
         {
+      
           requestApi(options, function (error, response) { 
+          
             if (error) 
             {
               cb(error,null);
@@ -53,7 +53,7 @@ const BsnDataProduct  = async (requestUser,cb)=>{
             else
             {
               var boolRtaConst = response.body.includes("Transaccion exitosa");
-              
+             
               if(boolRtaConst === true)
               {
                 jsonResultData = JSON.parse(response.body);
