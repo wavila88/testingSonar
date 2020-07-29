@@ -21,13 +21,12 @@ const BsnDataProduct  = async (requestUser,cb)=>{
         var vUrlAPiProduct = ObjClsEnv.GetEnviromentAcces("1");
         const ObjOfusData = new ClsObjOfus();
 
-        
         let dataRow = JSON.stringify({
               "documentNumber":  requestUser.viDOCUMENT_NUMBER  ,
               "documetType":   requestUser.viTYPE_DOCUMENT ,
               "cardId":  requestUser.viSERIAL_NUMBER_PRODUCT,
               "cardSeqNum": requestUser.viSEQ_NUM_CODE,
-              "uid": RqUID 
+              "uid": RqUID
           });
 
         var options = {
@@ -40,13 +39,12 @@ const BsnDataProduct  = async (requestUser,cb)=>{
           body: dataRow
         };
 
-        
         if(requestUser.viTYPE_PROCESS  === "0")
         {
 
-          requestApi(options, function (error, response) { 
+          requestApi(options, function (error, response) {
 
-            if (error) 
+            if (error)
             {
               cb(error,null);
             }
@@ -61,11 +59,11 @@ const BsnDataProduct  = async (requestUser,cb)=>{
                 Account = "'Account_productId' : " + "'" + jsonResultData["acctCCInfoInqRs"]["account"]["productId"] + "',";
                 ccmotoAcct_effDt  = "'CcmotoAcct_EffDt' : " + "'" + jsonResultData["acctCCInfoInqRs"]["cardAcctId"]["ccmotoAcct"]["effDt"] + "'";
                 ResultReturnJsonDataProduct = "{" + NumTC  + Account + ccmotoAcct_effDt +"}"; 
-                cb(null, JSON.parse(JSON.stringify(ResultReturnJsonDataProduct))); 
+                cb(null, JSON.parse(JSON.stringify(ResultReturnJsonDataProduct)));
               }
               else
               {
-                cb(null,JSON.parse(response.body));      
+                cb(null,JSON.parse(response.body));
               }
 
             }

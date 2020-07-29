@@ -19,10 +19,11 @@ const request ={
 
 describe('test data product ', () =>{
   beforeEach(() => {
+    process.env.VTypeEnv = "1";
     var endpoint = ObjClsEnv.GetEnviromentAcces("2");
     var resource = ObjClsEnv.GetEnviromentAcces("3");
 
-    console.log("END POINT2: ", endpoint )
+    
     nock(endpoint)
       .post(resource)
       .reply((uri, requestBody, cb) => {
