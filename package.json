@@ -1,5 +1,5 @@
 {
-  "name": "bbog-dig-sd-events-temp-insproduct-lambda",
+  "name": "bbog-dig-sd-event-data-product-lambda",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -28,6 +28,8 @@
     "r2": "^2.0.1",
     "request": "^2.88.2",
     "unirest": "^0.6.0",
-    "uuid": "^8.0.0"
+    "uuid": "^8.0.0",
+    "gulp": "~4.0.2",
+    "sonarqube-scanner": "^2.5.0"
   }
 }

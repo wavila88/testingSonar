@@ -15,8 +15,8 @@ gulp.task('sonar', function(callback) {
             'sonar.sources': 'src',
             'sonar.test.inclusions':'/src/test/*.js' ,
             'sonar.javascript.lcov.reportPaths': 'coverage/lcov.info',
-            'sonar.coverage.exclusions': 'src/bin/www.ts,src/config/configDB.js',
-            'sonar.exclusions': 'src/config/configDB.js'
+            'sonar.coverage.exclusions': 'src/config/configDb.js',
+            'sonar.exclusions': 'src/config/configDb.js'
         }
     }, callback);
 });
