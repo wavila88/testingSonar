@@ -1,5 +1,5 @@
 exports.requestUser = function(event){
-    
+
     return {
          "viSERIAL_NUMBER_PRODUCT"      : event.SERIAL_NUMBER_PRODUCT,
          "viSEQ_NUM_CODE"               : event.SEQ_NUM_CODE,
@@ -9,9 +9,5 @@ exports.requestUser = function(event){
          "viDOCUMENT_NUMBER"            : event.DOCUMENT_NUMBER,
          "viTYPE_PROCESS"               : event.TYPE_PROCESS
     };
-    
+
 }
-
-
-    
-    

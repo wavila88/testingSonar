@@ -1,7 +1,7 @@
 class ObfuscateData {
 
     constructor() { }
-    
+
     FnMask(nt) {
         let fParte = nt.substring(nt.length - 4);
         let size =4 ;

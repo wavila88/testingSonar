@@ -132,7 +132,7 @@ const DataTestTC  = ()=>{
 
     VrTest =  VrTest.replace(/'/g, '"');
     return VrTest;
-    
+
 
 };
 

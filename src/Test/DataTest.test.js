@@ -9,4 +9,3 @@ describe('testing for dataTest', () => {
         expect(response.acctCCInfoInqRs.rqUID).to.equal('43bca1a1-17d3-4688-8621-396b3f0a3371');
     });
 });
-

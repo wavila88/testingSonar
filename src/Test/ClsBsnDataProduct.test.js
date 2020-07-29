@@ -32,7 +32,7 @@ describe('test data product ', () =>{
     });
 
   it('Call api, map and  response', ()=>{
-   product.BsnDataProduct(request,(response,error) =>{
+   product.BsnDataProduct(request,(respo,error) =>{
 
    const res = JSON.parse(error.replace(/'/gi, '"'))
      expect(res.CardId_productId).to.equal('****6683');

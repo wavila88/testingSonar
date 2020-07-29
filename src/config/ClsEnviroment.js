@@ -1,11 +1,11 @@
 const ObjClsSec		        =   require('../config/ClsSec.js');
 
-const GetEnviromentAcces = (Option) =>{
+const GetEnviromentAcces = (Option) => {
 
-     let varEnviroment = process.env.VTypeEnv;  
+     let varEnviroment = process.env.VTypeEnv;
      let GateAccess =  '';
      let AccessReturn = '';
-     
+
      if(Option === "0")
      {
           if (varEnviroment === "1") // QA
