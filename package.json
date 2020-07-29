@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "nyc --reporter=text mocha --timeout 10000 './src/Test/'",
+    "coverage": "nyc _mocha --timeout 10000 './src/test/*.js'",
+    "coverage:report": "nyc report --reporter=lcov --reporter=text",
     "build": "npx tsc",
     "sonar": "gulp sonar"
   },
