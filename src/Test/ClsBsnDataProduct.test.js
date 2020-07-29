@@ -23,7 +23,7 @@ describe('test data product ', () =>{
     var endpoint = ObjClsEnv.GetEnviromentAcces("2");
     var resource = ObjClsEnv.GetEnviromentAcces("3");
 
-    
+
     nock(endpoint)
       .post(resource)
       .reply((uri, requestBody, cb) => {
