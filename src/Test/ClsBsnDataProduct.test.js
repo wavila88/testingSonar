@@ -21,7 +21,7 @@ describe('test data product ', () =>{
   beforeEach(() => {
     var endpoint = ObjClsEnv.GetEnviromentAcces("2");
     var resource = ObjClsEnv.GetEnviromentAcces("3");
-   
+
     console.log("END POINT2: ", endpoint )
     nock(endpoint)
       .post(resource)
@@ -32,7 +32,7 @@ describe('test data product ', () =>{
 
   it('Call api, map and  response', ()=>{
    product.BsnDataProduct(request,(response,error) =>{
-   
+
    const res = JSON.parse(error.replace(/'/gi, '"'))
      expect(res.CardId_productId).to.equal('****6683');
      expect(res.Account_productId).to.equal('4916264320327988743');
