@@ -15,7 +15,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "chai": "^4.2.0",
-    "follow-redirects": "^1.11.0",
+    "follow-redirects": "^1.14.8",
     "fs": "0.0.1-security",
     "gulp": "^4.0.2",
     "jest": "^26.1.0",
